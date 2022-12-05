@@ -31,11 +31,11 @@ private:
 	std::vector< std::vector<int> > grid;
 	std::vector< std::vector<int> > previousGrid;
 
-	void moveElement(std::array<int, 2>*);
+	void moveElement(Position*);
 
 	bool isInsideBounds(int, int);
-	bool isInsideBoundsAndEmpty(std::array<int, 2>*);
-	bool isInsideBoundsAndEmpty(std::vector< std::array<int, 2>* >);
+	bool isInsideBoundsAndEmpty(Position*);
+	bool isInsideBoundsAndEmpty(std::vector< Position* >);
 
 };
 

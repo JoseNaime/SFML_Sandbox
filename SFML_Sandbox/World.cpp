@@ -5,9 +5,9 @@ World::World(unsigned int _width, unsigned int _height) {
 	height = floor(_height / elementSize);
 
 	// Init grid with empty cells 0
-	for (unsigned int i = 0; i < width; i++) {
+	for (int i = 0; i < width; i++) {
 		std::vector<int> line = {};
-		for (unsigned int j = 0; j < height; j++) {
+		for (int j = 0; j < height; j++) {
 			line.push_back(0);
 		}
 		grid.push_back(line);
@@ -35,17 +35,17 @@ void World::update() {
 				Position{i, j} // position Position{ x, y}
 			};
 
-			std::array<int, 2> DOWN = {
+			Position DOWN = {
 				currElement.position.x ,
 				currElement.position.y + 1
 			};
 
-			std::array<int, 2> DOWN_LEFT = {
+			Position DOWN_LEFT = {
 				currElement.position.x - 1,
 				currElement.position.y + 1
 			};
 
-			std::array<int, 2> DOWN_RIGHT = {
+			Position DOWN_RIGHT = {
 				currElement.position.x + 1 ,
 				currElement.position.y + 1
 			};
@@ -120,15 +120,14 @@ bool World::isInsideBounds(int x, int y) {
 		(x < width&& y < height); // Check if it is not over width or height
 }
 
-bool World::isInsideBoundsAndEmpty(std::array<int, 2>* arrayReference) {
-	std::array<int, 2> position = *arrayReference;
-	int _x = position[0];
-	int _y = position[1];
+bool World::isInsideBoundsAndEmpty(Position* position) {
+	int _x = position->x;
+	int _y = position->y;
 
 	return (isInsideBounds(_x, _y) && previousGrid[_x][_y] == 0);
 }
 
-bool World::isInsideBoundsAndEmpty(std::vector<std::array<int, 2>* > vectorOfPositions) {
+bool World::isInsideBoundsAndEmpty(std::vector<Position* > vectorOfPositions) {
 	if (vectorOfPositions.size() == 0) {
 		std::wcerr << "isInsideBoundsAndEmpty can't recieve an empty vector of positions, returning false" << std::endl;
 		return false;
@@ -138,9 +137,9 @@ bool World::isInsideBoundsAndEmpty(std::vector<std::array<int, 2>* > vectorOfPos
 	}
 
 	for (int i = 0; i < vectorOfPositions.size(); i++) {
-		std::array<int, 2> currentPosition = *vectorOfPositions[i];
-		int _x = currentPosition[0];
-		int _y = currentPosition[1];
+		Position* position = vectorOfPositions[i];
+		int _x = position->x;
+		int _y = position->y;
 
 		if (!(isInsideBounds(_x, _y) && previousGrid[_x][_y] == 0)) {
 			return false;
@@ -150,8 +149,8 @@ bool World::isInsideBoundsAndEmpty(std::vector<std::array<int, 2>* > vectorOfPos
 	return true;
 }
 
-void moveElement(std::array<int, 2>* arrayReference) {
-	std::array<int, 2> position = *arrayReference;
+void moveElement(Position* toPosition) {
+	
 
 }
 
