@@ -24,6 +24,8 @@ int main() {
         {
             if (event.type == sf::Event::Closed) {
                 window.close();
+                
+            // Spawn
             } else if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 
@@ -32,6 +34,14 @@ int main() {
 
                 world.spawnElement(Cell(CELL_TYPE::SAND, { gridX, gridY }));
  
+            // Delete
+            } else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)){
+                sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
+                int gridX = floor(mousePosition.x / world.getCellSize());
+                int gridY = floor(mousePosition.y / world.getCellSize());
+
+                world.deleteElement({ gridX, gridY });
             }
         }
 

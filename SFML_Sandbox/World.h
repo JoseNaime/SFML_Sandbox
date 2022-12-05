@@ -35,17 +35,18 @@ public:
 	void update();
 	void draw(sf::RenderWindow &);
 	void spawnElement(Cell);
+	void deleteElement(Position);
 	int getCellSize();
 
 private:
-	const unsigned int cellSize = 5;
+	const unsigned int cellSize = 8;
 	unsigned int width, height;
 	std::vector< std::vector<Cell> > grid;
 	std::vector< std::vector<Cell> > previousGrid;
 
 	void move(Cell, Position);
 
-	bool isInsideBounds(int, int);
+	bool isInsideBounds(Position);
 	bool isInsideBoundsAndEmpty(Position);
 	bool isInsideBoundsAndEmpty(std::vector< Position >);
 

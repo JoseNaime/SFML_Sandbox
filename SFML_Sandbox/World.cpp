@@ -111,16 +111,16 @@ void World::draw(sf::RenderWindow& window) {
 	}
 }
 
-bool World::isInsideBounds(int x, int y) {
-	return (x > 0 && y > 0) &&  // Check if its not less than 0
-		(x < width && y < height); // Check if it is not over width or height
+bool World::isInsideBounds(Position position) {
+	return (position.x > 0 && position.y > 0) &&  // Check if its not less than 0
+		(position.x < width && position.y < height); // Check if it is not over width or height
 }
 
 bool World::isInsideBoundsAndEmpty(Position position) {
 	int _x = position.x;
 	int _y = position.y;
 
-	return (isInsideBounds(_x, _y) && previousGrid[_x][_y].type == CELL_TYPE::EMPTY);
+	return (isInsideBounds(position) && previousGrid[_x][_y].type == CELL_TYPE::EMPTY);
 }
 
 bool World::isInsideBoundsAndEmpty(std::vector<Position > vectorOfPositions) {
@@ -137,7 +137,7 @@ bool World::isInsideBoundsAndEmpty(std::vector<Position > vectorOfPositions) {
 		int _x = position.x;
 		int _y = position.y;
 
-		if (!(isInsideBounds(_x, _y) && previousGrid[_x][_y].type == CELL_TYPE::EMPTY)) {
+		if (!(isInsideBounds(position) && previousGrid[_x][_y].type == CELL_TYPE::EMPTY)) {
 			return false;
 		}
 	}
@@ -160,9 +160,15 @@ void World::move(Cell cell, Position toPosition) {
 }
 
 void World::spawnElement(Cell _cell) {
-	if (!isInsideBounds(_cell.position.x, _cell.position.y)) return;
+	if (!isInsideBounds(_cell.position)) return;
 
 	grid[_cell.position.x][_cell.position.y] = _cell;
+}
+
+void World::deleteElement(Position position) {
+	if (!isInsideBounds(position)) return;
+
+	grid[position.x][position.y] = Cell(CELL_TYPE::EMPTY, position);
 }
 
 int World::getCellSize() {
