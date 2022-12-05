@@ -98,7 +98,7 @@ void World::draw(sf::RenderWindow& window) {
 				switch (currentCell.type) {
 
 					case CELL_TYPE::SAND:
-						shape.setFillColor(sf::Color::White);
+						shape.setFillColor(sf::Color(168, 127, 50));
 						break;
 
 					default:
