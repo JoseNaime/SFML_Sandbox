@@ -5,6 +5,7 @@
 #include <vector>
 #include <array>
 #include <iostream>
+#include <random>
 
 struct Position {
 	int x;
@@ -31,7 +32,7 @@ private:
 	std::vector< std::vector<int> > grid;
 	std::vector< std::vector<int> > previousGrid;
 
-	void moveElement(Position*);
+	void moveElement(Element*, Position*);
 
 	bool isInsideBounds(int, int);
 	bool isInsideBoundsAndEmpty(Position*);

@@ -30,24 +30,24 @@ void World::update() {
 			if (cell_type == 0) continue;
 
 
-			Element currElement = {
+			Element currentElement = {
 				cell_type, // type int
 				Position{i, j} // position Position{ x, y}
 			};
 
 			Position DOWN = {
-				currElement.position.x ,
-				currElement.position.y + 1
+				currentElement.position.x ,
+				currentElement.position.y + 1
 			};
 
 			Position DOWN_LEFT = {
-				currElement.position.x - 1,
-				currElement.position.y + 1
+				currentElement.position.x - 1,
+				currentElement.position.y + 1
 			};
 
 			Position DOWN_RIGHT = {
-				currElement.position.x + 1 ,
-				currElement.position.y + 1
+				currentElement.position.x + 1 ,
+				currentElement.position.y + 1
 			};
 
 
@@ -57,23 +57,25 @@ void World::update() {
 					// Check if down is a possible move and empty
 					if (isInsideBoundsAndEmpty(&DOWN)) {
 						// If down is empty, go down
-						grid[i][j] = 0;
-						grid[i][j + 1] = cell_type;
+						moveElement(&currentElement, &DOWN);
 					}
-
 
 					// Check if down-left and down-right are possible moves and are empty
 					else if (isInsideBoundsAndEmpty({ &DOWN_LEFT, &DOWN_RIGHT })) {
-						grid[i][j] = 0;
-						grid[i - 1][j + 1] = cell_type;
+
+						// Random decition to go left or right
+						if (rand() < 0.5) {
+							moveElement(&currentElement, &DOWN_LEFT);
+						}
+						else {
+							moveElement(&currentElement, &DOWN_RIGHT);
+						}
 					}
 					else if (isInsideBoundsAndEmpty(&DOWN_LEFT)) {
-						grid[i][j] = 0;
-						grid[i - 1][j + 1] = cell_type;
+						moveElement(&currentElement, &DOWN_LEFT);
 					}
 					else if (isInsideBoundsAndEmpty(&DOWN_RIGHT)) {
-						grid[i][j] = 0;
-						grid[i + 1][j + 1] = cell_type;
+						moveElement(&currentElement, &DOWN_RIGHT);
 					}
 
 					//break;
@@ -149,9 +151,18 @@ bool World::isInsideBoundsAndEmpty(std::vector<Position* > vectorOfPositions) {
 	return true;
 }
 
-void moveElement(Position* toPosition) {
-	
+void World::moveElement(Element* element, Position* toPosition) {
+	int element_x = element->position.x;
+	int element_y = element->position.y;
 
+	int toPosition_x = toPosition->x;
+	int toPosition_y = toPosition->y;
+
+	// Reset current element posistion cell to 0 (Empty)
+	grid[element_x][element_y] = 0;
+
+	// Set grid toPosition equals to the element type
+	grid[toPosition_x][toPosition_y] = element->type;
 }
 
 void World::spawnElement(int x, int y, int elementId) {
