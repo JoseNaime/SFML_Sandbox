@@ -7,14 +7,25 @@
 #include <iostream>
 #include <random>
 
+
+enum class CELL_TYPE {
+	EMPTY = 0,
+	SAND = 1,
+};
+
 struct Position {
 	int x;
 	int y;
 };
 
-struct Element {
-	int type; // TODO: Replace with an enum
+struct Cell {
+	CELL_TYPE type; 
 	Position position;
+
+	Cell(CELL_TYPE _type, Position _position) {
+		type = _type;
+		position = _position;
+	}
 };
 
 class World {
@@ -23,20 +34,20 @@ public:
 	~World();
 	void update();
 	void draw(sf::RenderWindow &);
-	void spawnElement(int x, int y, int elementId);
-	int getElementSize();
+	void spawnElement(Cell);
+	int getCellSize();
 
 private:
-	const unsigned int elementSize = 5;
+	const unsigned int cellSize = 5;
 	unsigned int width, height;
-	std::vector< std::vector<int> > grid;
-	std::vector< std::vector<int> > previousGrid;
+	std::vector< std::vector<Cell> > grid;
+	std::vector< std::vector<Cell> > previousGrid;
 
-	void moveElement(Element*, Position*);
+	void move(Cell, Position);
 
 	bool isInsideBounds(int, int);
-	bool isInsideBoundsAndEmpty(Position*);
-	bool isInsideBoundsAndEmpty(std::vector< Position* >);
+	bool isInsideBoundsAndEmpty(Position);
+	bool isInsideBoundsAndEmpty(std::vector< Position >);
 
 };
 

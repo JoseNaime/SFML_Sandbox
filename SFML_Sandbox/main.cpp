@@ -27,11 +27,10 @@ int main() {
             } else if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 
-                int gridX = floor(mousePosition.x / world.getElementSize());
-                int gridY = floor(mousePosition.y / world.getElementSize());
+                int gridX = floor(mousePosition.x / world.getCellSize());
+                int gridY = floor(mousePosition.y / world.getCellSize());
 
-
-                world.spawnElement(gridX, gridY, 1);
+                world.spawnElement(Cell(CELL_TYPE::SAND, { gridX, gridY }));
  
             }
         }
