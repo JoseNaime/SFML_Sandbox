@@ -3,6 +3,18 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <array>
+#include <iostream>
+
+struct Position {
+	int x;
+	int y;
+};
+
+struct Element {
+	int type; // TODO: Replace with an enum
+	Position position;
+};
 
 class World {
 public:
@@ -19,7 +31,11 @@ private:
 	std::vector< std::vector<int> > grid;
 	std::vector< std::vector<int> > previousGrid;
 
+	void moveElement(std::array<int, 2>*);
+
 	bool isInsideBounds(int, int);
+	bool isInsideBoundsAndEmpty(std::array<int, 2>*);
+	bool isInsideBoundsAndEmpty(std::vector< std::array<int, 2>* >);
 
 };
 
