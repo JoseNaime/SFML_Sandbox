@@ -7,6 +7,11 @@
 #include <iostream>
 #include <random>
 
+enum class ELEMENT_PROPERTY {
+	SOLID,
+	LIQUID,
+	GAS
+};
 
 enum class CELL_TYPE {
 	EMPTY = 0,

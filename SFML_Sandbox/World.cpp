@@ -45,38 +45,30 @@ void World::update() {
 			};
 
 
-			switch (currentCell.type) {
-				case CELL_TYPE::SAND:
 
-					// Check if down is a possible move and empty
-					if (isInsideBoundsAndEmpty(DOWN)) {
-						// If down is empty, go down
-						move(currentCell, DOWN);
-					}
-
-					// Check if down-left and down-right are possible moves and are empty
-					else if (isInsideBoundsAndEmpty({ DOWN_LEFT, DOWN_RIGHT })) {
-
-						// Random decition to go left or right
-						if (rand() < 0.5) {
-							move(currentCell, DOWN_LEFT);
-						}
-						else {
-							move(currentCell, DOWN_RIGHT);
-						}
-					}
-					else if (isInsideBoundsAndEmpty(DOWN_LEFT)) {
-						move(currentCell, DOWN_LEFT);
-					}
-					else if (isInsideBoundsAndEmpty(DOWN_RIGHT)) {
-						move(currentCell, DOWN_RIGHT);
-					}
-
-					break;
-
-				default:
-					break;
+			// Check if down is a possible move and empty
+			if (isInsideBoundsAndEmpty(DOWN)) {
+				// If down is empty, go down
+				move(currentCell, DOWN);
 			}
+			// Check if down-left and down-right are possible moves and are empty
+			else if (isInsideBoundsAndEmpty({ DOWN_LEFT, DOWN_RIGHT })) {
+
+				// Random decition to go left or right
+				if (rand() < 0.5) {
+					move(currentCell, DOWN_LEFT);
+				}
+				else {
+					move(currentCell, DOWN_RIGHT);
+				}
+			}
+			else if (isInsideBoundsAndEmpty(DOWN_LEFT)) {
+				move(currentCell, DOWN_LEFT);
+			}
+			else if (isInsideBoundsAndEmpty(DOWN_RIGHT)) {
+				move(currentCell, DOWN_RIGHT);
+			}
+
 		}
 	}
 }
@@ -113,7 +105,7 @@ void World::draw(sf::RenderWindow& window) {
 
 bool World::isInsideBounds(Position position) {
 	return (position.x > 0 && position.y > 0) &&  // Check if its not less than 0
-		(position.x < width && position.y < height); // Check if it is not over width or height
+		(position.x < width&& position.y < height); // Check if it is not over width or height
 }
 
 bool World::isInsideBoundsAndEmpty(Position position) {
