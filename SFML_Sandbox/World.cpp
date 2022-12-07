@@ -53,9 +53,10 @@ void World::update() {
 			}
 			// Check if down-left and down-right are possible moves and are empty
 			else if (isInsideBoundsAndEmpty({ DOWN_LEFT, DOWN_RIGHT })) {
+				float randomValue =(float) rand() / RAND_MAX;
 
 				// Random decition to go left or right
-				if (rand() < 0.5) {
+				if (randomValue < 0.5) {
 					move(currentCell, DOWN_LEFT);
 				}
 				else {
