@@ -29,45 +29,10 @@ void World::update() {
 			// If cell is empty, continue
 			if (currentCell.type == CELL_TYPE::EMPTY) continue;
 
-			Position DOWN = {
-				currentCell.position.x ,
-				currentCell.position.y + 1
-			};
+			CellPositionController cellPositionController(this, currentCell);
 
-			Position DOWN_LEFT = {
-				currentCell.position.x - 1,
-				currentCell.position.y + 1
-			};
-
-			Position DOWN_RIGHT = {
-				currentCell.position.x + 1 ,
-				currentCell.position.y + 1
-			};
-
-
-
-			// Check if down is a possible move and empty
-			if (isInsideBoundsAndEmpty(DOWN)) {
-				// If down is empty, go down
-				move(currentCell, DOWN);
-			}
-			// Check if down-left and down-right are possible moves and are empty
-			else if (isInsideBoundsAndEmpty({ DOWN_LEFT, DOWN_RIGHT })) {
-				float randomValue =(float) rand() / RAND_MAX;
-
-				// Random decition to go left or right
-				if (randomValue < 0.5) {
-					move(currentCell, DOWN_LEFT);
-				}
-				else {
-					move(currentCell, DOWN_RIGHT);
-				}
-			}
-			else if (isInsideBoundsAndEmpty(DOWN_LEFT)) {
-				move(currentCell, DOWN_LEFT);
-			}
-			else if (isInsideBoundsAndEmpty(DOWN_RIGHT)) {
-				move(currentCell, DOWN_RIGHT);
+			if (std::find(currentCell.properties.begin(), currentCell.properties.end(), ELEMENT_PROPERTY::SOLID) != currentCell.properties.end()) {
+				cellPositionController.fallDownLeftRight();
 			}
 
 		}
@@ -106,14 +71,11 @@ void World::draw(sf::RenderWindow& window) {
 
 bool World::isInsideBounds(Position position) {
 	return (position.x > 0 && position.y > 0) &&  // Check if its not less than 0
-		(position.x < width&& position.y < height); // Check if it is not over width or height
+		(position.x < width && position.y < height); // Check if it is not over width or height
 }
 
 bool World::isInsideBoundsAndEmpty(Position position) {
-	int _x = position.x;
-	int _y = position.y;
-
-	return (isInsideBounds(position) && previousGrid[_x][_y].type == CELL_TYPE::EMPTY);
+	return (isInsideBounds(position) && previousGrid[position.x][position.y].type == CELL_TYPE::EMPTY);
 }
 
 bool World::isInsideBoundsAndEmpty(std::vector<Position > vectorOfPositions) {
@@ -127,10 +89,8 @@ bool World::isInsideBoundsAndEmpty(std::vector<Position > vectorOfPositions) {
 
 	for (int i = 0; i < vectorOfPositions.size(); i++) {
 		Position position = vectorOfPositions[i];
-		int _x = position.x;
-		int _y = position.y;
 
-		if (!(isInsideBounds(position) && previousGrid[_x][_y].type == CELL_TYPE::EMPTY)) {
+		if (!(isInsideBounds(position) && previousGrid[position.x][position.y].type == CELL_TYPE::EMPTY)) {
 			return false;
 		}
 	}
@@ -146,10 +106,12 @@ void World::move(Cell cell, Position toPosition) {
 	int toPosition_y = toPosition.y;
 
 	// Reset current cell posistion cell to 0 (Empty)
-	grid[cell_x][cell_y].type = CELL_TYPE::EMPTY;
+	grid[cell_x][cell_y] = Cell(CELL_TYPE::EMPTY, cell.position);
 
 	// Set grid toPosition equals to the cell type
-	grid[toPosition_x][toPosition_y].type = cell.type;
+	cell.position = toPosition;
+	grid[toPosition_x][toPosition_y] = cell;
+
 }
 
 void World::spawnElement(Cell _cell) {
